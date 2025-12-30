@@ -26,6 +26,29 @@ const Register = async (req,res) => {
     }
 }
 
+const isAuthenticated = async (req,res) => {
+    try {
+        const token = req.headers['x-access-token'];
+        console.log("TOKEN IS : ",token);
+        const response = await userServ.isAuthenticated(token)    // response is user.id
+        return res.status(201).json({
+            data : response,
+            success : true,
+            message : 'User is Authenticated and User is valid',
+            err : {}
+        })
+
+    } catch (error) {
+        console.log("Something went wrong in controller")
+        return res.status(500).json({
+            data:{},
+            success:false,
+            message : error.message,
+            err : error
+        })
+    }
+}
+
 const login = async (req,res) => {
     try {
         
@@ -69,5 +92,6 @@ const deleteAccount = async (req,res) => {
 module.exports = {
     Register,
     login,
-    deleteAccount
+    deleteAccount,
+    isAuthenticated
 }

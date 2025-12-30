@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     {
-      sequelize,          // ✅ MUST be here
+      sequelize,
       modelName: 'User',
       tableName: 'users',
 

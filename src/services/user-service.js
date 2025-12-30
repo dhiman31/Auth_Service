@@ -9,6 +9,36 @@ class userService{
         this.userRepo = new userRepo;
     }
 
+    verifyToken (token) {
+        try {
+            const response = jwt.verify(token,JWT_TOKEN);
+            return response
+        } catch (error) {
+            console.error('JWT verification failed:', error.message);
+            throw new Error('Invalid or expired token');
+        }
+    }
+
+    async isAuthenticated (token) {
+        try {
+            const response = await this.verifyToken(token);
+            if(!response){
+                throw new Error('Invalid Token');
+            }
+
+            const user = await this.userRepo.getUserbyEmail(response.email);
+            if(!user){
+                throw new Error('User no longer exists');
+            }
+
+            return user.id;
+
+        } catch (error) {
+            console.log("Problem in the service layer")
+            throw error
+        }
+    }
+
     async Register (data) {
         try {
             
