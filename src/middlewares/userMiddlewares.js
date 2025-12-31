@@ -27,6 +27,20 @@ const validAuthRequest = (req,res,next) => {
     next();
 }
 
+const validate_is_admin_request = (req,res,next) => {
+    if(!req.body.id){
+        return res.status(400).json({
+        success: false,
+        message: 'User Id not sent',
+        data: {},
+        err: {}
+        }); 
+    }
+
+    next();
+}
+
 module.exports = {
-    validAuthRequest
+    validAuthRequest,
+    validate_is_admin_request
 }

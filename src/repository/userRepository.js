@@ -1,5 +1,7 @@
 const { where } = require('sequelize');
-const { User } = require('../models/index');
+const { User , Role } = require('../models/index');
+const role = require('../models/role');
+const validationError = require('../utils/validation_error');
 
 class userRepo{
 
@@ -10,8 +12,11 @@ class userRepo{
             return user;
 
         } catch (error) {
-            console.log("Problem in User Repository");
-            return {error};
+            if(error.name === 'SequelizeValidationError')
+            {
+                throw new validationError(error);
+            }
+            throw error;
         }
     }
 
@@ -39,8 +44,28 @@ class userRepo{
             })
         } catch (error) {
             console.log("Cannot Delete the Account")
-            return error
+            throw error
         }
+    }
+
+    async isAdmin (userId) {
+        try {
+
+            const user = await User.findByPk(userId);
+            const adminRole = await Role.findOne ({
+                where: {
+                    name: 'ADMIN'
+                }
+            });
+
+            const response = user.hasRole(adminRole);
+            return response;
+
+        } catch (error) {
+            console.log("Something went wrong in repository layer");
+            throw error;
+        }
+        
     }
 
 }

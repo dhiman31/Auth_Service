@@ -26,6 +26,7 @@ class userService{
                 throw new Error('Invalid Token');
             }
 
+            // suppose you had the token but the user account was deleted
             const user = await this.userRepo.getUserbyEmail(response.email);
             if(!user){
                 throw new Error('User no longer exists');
@@ -46,8 +47,12 @@ class userService{
             return user;
 
         } catch (error) {
+            if(error.name === 'SequelizeValidationError')
+            {
+                throw error;
+            }
             console.log("Problem in the service layer")
-            return {error}
+            throw error
         }
     }
 
@@ -103,7 +108,17 @@ class userService{
             await this.userRepo.deleteAccount(userId);
         } catch (error) {
             console.log("Cannot delete the account")
-            return error
+            throw error
+        }
+    }
+
+    async isAdmin (userId) {
+        try {
+            const response = this.userRepo.isAdmin(userId);
+            return response
+        } catch (error) {
+            console.log("Something went wrong in the service layer");
+            throw error;
         }
     }
 

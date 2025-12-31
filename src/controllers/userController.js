@@ -16,11 +16,10 @@ const Register = async (req,res) => {
         })
 
     } catch (error) {
-        console.log("Something went wrong in controller")
-        return res.status(500).json({
+        return res.status(error.statusCode).json({
             data:{},
             success:false,
-            message : 'Not able to create user',
+            message : error.message,
             err : error
         })
     }
@@ -84,14 +83,40 @@ const deleteAccount = async (req,res) => {
 
     } catch (error) {
         console.log("Issue in controller");
-        return error
+        return res.status(500).json({
+            data:{},
+            success:false,
+            message : error.message,
+            err : error
+        })
     }
 }
 
+const isAdmin = async (req,res) => {
+    try {
+
+        const response = await userServ.isAdmin(req.body.id);
+        return res.status(201).json({
+            data : response ,
+            success : true,
+            message : 'Successfully checked whether user is admin',
+            err : {}
+        })
+    } catch (error) {
+        console.log("Something went wrong in the controller layer");
+        return res.status(500).json({
+            data:{},
+            success:false,
+            message : error.message,
+            err : error
+        })
+    }
+    }
 
 module.exports = {
     Register,
     login,
     deleteAccount,
-    isAuthenticated
+    isAuthenticated,
+    isAdmin
 }
