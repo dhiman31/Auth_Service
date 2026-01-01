@@ -122,6 +122,26 @@ class userService{
         }
     }
 
+    async isCustomer (userId) {
+        try {
+            const response = this.userRepo.isCustomer(userId);
+            return response
+        } catch (error) {
+            console.log("Something went wrong in the service layer");
+            throw error;
+        }
+    }
+
+    async isAirlineBusiness (userId) {
+        try {
+            const response = this.userRepo.isAirlineBusiness(userId);
+            return response
+        } catch (error) {
+            console.log("Something went wrong in the service layer");
+            throw error;
+        }
+    }
+
 }
 
 module.exports = userService

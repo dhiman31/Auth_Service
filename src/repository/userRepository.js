@@ -68,6 +68,38 @@ class userRepo{
         
     }
 
+    async isCustomer (userId) {
+        try {
+            const user = await User.findByPk(userId);
+            const customerRole = await Role.findOne ({
+                where: {
+                    name: 'CUSTOMER'
+                }
+            });
+            const response = user.hasRole(customerRole);
+            return response;
+        } catch (error) {
+            console.log("Something went wrong in repository layer");
+            throw error;
+        }
+    }
+
+    async isAirlineBusiness (userId) {
+        try {
+            const user = await User.findByPk(userId);
+            const airlineBusinessRole = await Role.findOne ({
+                where: {
+                    name: 'AIRLINE_BUSINESS'
+                }
+            });
+            const response = user.hasRole(airlineBusinessRole);
+            return response;
+        } catch (error) {
+            console.log("Something went wrong in repository layer");
+            throw error;
+        }
+    }
+
 }
 
 module.exports = userRepo;

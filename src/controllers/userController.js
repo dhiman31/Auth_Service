@@ -111,12 +111,56 @@ const isAdmin = async (req,res) => {
             err : error
         })
     }
+}
+
+const isCustomer = async (req,res) => {
+    try {
+        const response = await userServ.isCustomer(req.body.id);
+        return res.status(201).json({
+            data : response ,
+            success : true,
+            message : 'Successfully checked whether user is customer',
+            err : {}
+        })
+
+    } catch (error) {
+        console.log("Something went wrong in the controller layer");
+        return res.status(500).json({
+            data:{},
+            success:false,
+            message : error.message,
+            err : error
+        })
     }
+}
+
+const isAirlineBusiness = async (req,res) => {
+    try {
+        const response = await userServ.isAirlineBusiness(req.body.id);
+        return res.status(201).json({
+            data : response ,
+            success : true,
+            message : 'Successfully checked whether user is airline business',
+            err : {}
+        })
+
+    } catch (error) {
+        console.log("Something went wrong in the controller layer");
+        return res.status(500).json({
+            data:{},
+            success:false,
+            message : error.message,
+            err : error
+        })
+    }
+}
 
 module.exports = {
     Register,
     login,
     deleteAccount,
     isAuthenticated,
-    isAdmin
+    isAdmin,
+    isCustomer,
+    isAirlineBusiness
 }

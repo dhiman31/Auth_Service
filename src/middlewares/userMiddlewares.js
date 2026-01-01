@@ -27,7 +27,7 @@ const validAuthRequest = (req,res,next) => {
     next();
 }
 
-const validate_is_admin_request = (req,res,next) => {
+const validate_is_user_request = (req,res,next) => {
     if(!req.body.id){
         return res.status(400).json({
         success: false,
@@ -42,5 +42,5 @@ const validate_is_admin_request = (req,res,next) => {
 
 module.exports = {
     validAuthRequest,
-    validate_is_admin_request
+    validate_is_user_request
 }
