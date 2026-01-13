@@ -9,7 +9,7 @@ class userService{
         this.userRepo = new userRepo;
     }
 
-    verifyToken (token) {
+    async verifyToken (token) {
         try {
             const response = jwt.verify(token,JWT_TOKEN);
             return response
@@ -32,7 +32,8 @@ class userService{
                 throw new Error('User no longer exists');
             }
 
-            return user.id;
+            // return user.id;
+            return true;
 
         } catch (error) {
             console.log("Problem in the service layer")

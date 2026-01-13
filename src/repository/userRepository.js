@@ -9,6 +9,11 @@ class userRepo{
         try {
             
             const user = await User.create(data);
+            const role = await Role.findOne({
+                where: { name: 'CUSTOMER' }
+            });
+
+            await user.addRole(role);
             return user;
 
         } catch (error) {
